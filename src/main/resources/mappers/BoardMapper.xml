@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo4.mapper.BoardMapper">
+    <select id="getBoardList" resultType="com.example.demo4.dto.BoardDTO">
+        <![CDATA[
+        select *
+        from tbl_board where idx > 0
+        ]]>
+    </select>
+    <insert id="regBoard" parameterType="com.example.demo4.dto.BoardDTO">
+        insert into tbl_board (idx, title, content, writer)
+        values (#{idx}, #{title}, #{content}, #{writer});
+    </insert>
+    <select id="detailBoardList" parameterType="int" resultType="com.example.demo4.dto.BoardDTO">
+        select *
+        from tbl_board
+        where idx=#{idx}
+    </select>
+    <update id="updateBoard" parameterType="com.example.demo4.dto.BoardDTO">
+        update tbl_board set title = #{title}, content = #{content}, writer = #{writer}, updatedate = now()
+        where idx = #{idx};
+    </update>
+    <delete id="getBoardDelete" parameterType="java.lang.Integer">
+        <![CDATA[
+        delete
+        from tbl_board
+        where idx=#{idx}
+        ]]>
+    </delete>
+    <select id="getList" parameterType="com.example.demo4.dto.BoardDTO" resultType="com.example.demo4.dto.BoardDTO">
+        select *
+        from tbl_board
+        order by idx desc
+        LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+    </select>
+
+    <select id="getListCnt" parameterType="com.example.demo4.dto.BoardDTO" resultType="java.lang.Integer">
+        select count(*)
+        from tbl_board
+    </select>
+</mapper>
